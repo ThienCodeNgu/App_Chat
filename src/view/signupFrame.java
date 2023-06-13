@@ -22,6 +22,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import ConnectDB.Connect;
+import java.awt.Color;
 
 public class signupFrame extends JFrame {
 
@@ -94,6 +95,8 @@ public class signupFrame extends JFrame {
 		contentPane.add(passwordField);
 		
 		btnNewButton = new JButton("SIGN UP");
+		btnNewButton.setForeground(new Color(255, 255, 255));
+		btnNewButton.setBackground(new Color(0, 128, 192));
 		btnNewButton.setBounds(142, 294, 100, 21);
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -104,14 +107,13 @@ public class signupFrame extends JFrame {
 		
 		lbliconPass_1 = new JLabel("");
 		lbliconPass_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lbliconPass_1.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(loginFrame.class.getResource("name.png"))));
 		lbliconPass_1.setBounds(27, 244, 42, 42);
 		contentPane.add(lbliconPass_1);
 		
 		txtFullname = new JTextField();
 		txtFullname.setBounds(115, 244, 239, 43);
 		contentPane.add(txtFullname);
-		
-		
 		
 		URL url = loginFrame.class.getResource("messenger-icon.png");
     	Image img = Toolkit.getDefaultToolkit().createImage(url);

@@ -5,12 +5,15 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.net.InetAddress;
 import java.net.URL;
 import java.net.UnknownHostException;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
 import model.CustomListCellRenderer;
@@ -37,7 +40,7 @@ public class clientFrame extends JFrame {
 		start(port);
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 700, 400);
+		setBounds(100, 100, 700, 456);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -45,13 +48,14 @@ public class clientFrame extends JFrame {
 		contentPane.setLayout(null);
 		
 		list = new JList(model);
-		list.setBounds(21, 10, 655, 314);
-		contentPane.add(list);
+		JScrollPane scroll = new JScrollPane(list);
+		scroll.setBounds(21, 10, 655, 314);
+		contentPane.add(scroll);
 		list.setCellRenderer(new CustomListCellRenderer(name));
 		
 		
 		txtSend = new JTextField();
-		txtSend.setBounds(21, 334, 560, 19);
+		txtSend.setBounds(21, 390, 560, 19);
 		contentPane.add(txtSend);
 		txtSend.setColumns(10);
 		
@@ -61,8 +65,18 @@ public class clientFrame extends JFrame {
 				send(name);
 			}
 		});
-		btnSend.setBounds(591, 334, 85, 21);
+		btnSend.setBounds(591, 389, 85, 21);
 		contentPane.add(btnSend);
+		
+		txtSend.addKeyListener(new KeyAdapter() {
+			 public void keyPressed(KeyEvent e) {
+	                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+	                    // Thực hiện những câu lệnh tương tự như khi click vào button
+	                	btnSend.doClick();
+	                }
+	            }
+		});
+		
 		URL url = loginFrame.class.getResource("messenger-icon.png");
     	Image img = Toolkit.getDefaultToolkit().createImage(url);
     	this.setIconImage(img);
@@ -76,10 +90,6 @@ public class clientFrame extends JFrame {
 	public void send(String name) {
 		writeClient w = new writeClient(clientThread.socket, txtSend.getText(),name);
 		w.start();
-	}
-	public void colorList (String name) {
-		while(true) {
-			
-		}
+		txtSend.setText("");
 	}
 }
