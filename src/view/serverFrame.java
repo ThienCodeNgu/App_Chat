@@ -6,6 +6,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
@@ -89,9 +90,9 @@ public class serverFrame extends JFrame {
 		textField.setColumns(10);
 		
 		list = new JList(model);
-//		list.setBackground(Color.green);
-		list.setBounds(190, 10, 486, 312);
-		contentPane.add(list);
+		JScrollPane scr = new JScrollPane(list);
+		scr.setBounds(190, 10, 486, 312);
+		contentPane.add(scr);
 		
 		JButton startbtn = new JButton("START");
 		startbtn.setBackground(new Color(0, 255, 0));

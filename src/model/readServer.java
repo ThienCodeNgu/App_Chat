@@ -28,7 +28,6 @@ public void run() {
 				}
 			}
 			serverFrame.model.addElement(sms);
-
 		}
 	} catch (Exception e) {
 		try {
