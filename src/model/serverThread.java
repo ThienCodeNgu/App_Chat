@@ -1,56 +1,74 @@
-package model;
+package Model;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
-import view.clientFrame;
-import view.serverFrame;
+import javax.swing.DefaultListModel;
 
-public class serverThread extends Thread {
+import View.ServerFrame;
+import View.homeFrame;
+
+public class ServerThread extends Thread {
+
 	public static ServerSocket svsocket;
 	public static Socket socket;
 	private int port;
-	private volatile boolean isRunning;
-	public  static ArrayList<Socket> listSK;
-public serverThread(int port) {
-	this.port = port;
-}
-public void run() {
-	System.out.println("server is waiting");
-	try {
-		svsocket = new ServerSocket(port);
-		isRunning = true;
-		while (isRunning) {
-			socket = svsocket.accept();
-			System.out.println(socket);
-			serverFrame.model.addElement("server was connected with: "+socket);
-			listSK.add(socket);
-			int number = listSK.size();
-			serverFrame.lblNumber.setText(number+"");
-			readServer  r = new readServer(socket);
-			r.start();
-		}
-	} catch (IOException e) {
-		
-	}
-	
-}
-public void dung () {
-	isRunning = false;
-		try {
-			if (svsocket != null) {
-			svsocket.close();
-			serverFrame.model.addElement("server stopped");
-			serverFrame.lblNumber.setText("0");
-			serverFrame.lblipAddress.setText("");
-			socket.close();
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	public static ArrayList<Socket> listSK;
+	public static ArrayList<Account> listAccount;
+    private DataOutputStream dos;
+	public ServerThread(int port) {
+		this.port = port;
+
+
 	}
 
+	public void run() {
+		ServerFrame.ServerModel.addElement("Máy chủ đang chạy trên cổng " + port);
+		try {
+			svsocket = new ServerSocket(port);
+
+			while (true) {
+				
+				socket = svsocket.accept();
+				ServerFrame.ServerModel.addElement("Đã kết nối với: " + socket);
+				listSK.add(socket);
+				int num = listSK.size();
+				ServerFrame.NumConnect.setText(num + "");
+				
+
+				DataInputStream dis = new DataInputStream(socket.getInputStream());
+				String nameSocket = dis.readUTF();
+				Account acc = new Account(nameSocket, socket.getPort());
+				listAccount.add(acc);
+				
+				ReadServer rsv = new ReadServer(socket);
+				rsv.start();
+				
+			}
+
+		} catch (IOException e) {
+
+		}
+
+	}
+
+	public static void stopServer() throws IOException {
+
+		if (svsocket != null) {
+			svsocket.close();
+
+		}
+
+	}
+	public static void updateNum() {
+		int num = listSK.size();
+		ServerFrame.NumConnect.setText(num + "");
+	}
+	
 
 }

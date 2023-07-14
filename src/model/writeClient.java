@@ -1,31 +1,26 @@
-package model;
+package Model;
 
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.net.Socket;
-import java.util.Scanner;
+import View.homeFrame;
 
-import view.clientFrame;
 
-public class writeClient extends Thread {
-	private Socket socket;
+public class WriteClient extends Thread {
 	private String sms;
 	private String name;
-public writeClient (Socket socket, String sms, String name) {
-	this.socket = socket;
-	this.sms = sms;
-	this.name = name;
-}
+
+	public WriteClient(String sms, String name) {
+		this.sms = sms;
+		this.name = name;
+	}
+
 	public void run() {
-		DataOutputStream dos = null;
 		try {
-			dos = new DataOutputStream(socket.getOutputStream());
-			
-				dos.writeUTF(name+": "+sms);
-				clientFrame.model.addElement(name+": "+sms);
-			    
+			ClientThread.dos.writeUTF("text");
+			ClientThread.dos.writeUTF(name + ": " + sms);
+			ClientThread.dos.flush();
+			homeFrame.modelListChat.addElement(name + ": " + sms);
+			homeFrame.modelListChat.addElement("   ");
 		} catch (Exception e) {
-			clientFrame.model.addElement("Server is stopped");
+			homeFrame.modelListChat.addElement("Không thể gửi tin nhắn!");
 		}
 	}
 }

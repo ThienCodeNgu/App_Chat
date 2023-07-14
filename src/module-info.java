@@ -5,7 +5,7 @@
  * @author Vo Thien
  *
  */
-module java2 {
-	requires java.desktop;
+module DolphinChat {
 	requires java.sql;
+	requires java.desktop;
 }
